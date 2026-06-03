@@ -57,19 +57,37 @@
 }
 
 .dark .button-action-primary,
-.dark button.group\/IconButton.bg-action-link-05 {
+.dark button.group\/IconButton.bg-action-link-05,
+.dark
+  .interactive[data-interactive-variant="action"][data-interactive-prominence="primary"] {
   background-color: #3d1768;
 }
 
 .dark .button-action-primary:hover,
 .dark .button-action-primary[data-state="transient"],
 .dark button.group\/IconButton.bg-action-link-04,
-.dark button.group\/IconButton.hover\:bg-action-link-04:hover {
+.dark button.group\/IconButton.hover\:bg-action-link-04:hover,
+.dark
+  .interactive[data-interactive-variant="action"][data-interactive-prominence="primary"]:hover:not(
+    [data-disabled]
+  ),
+.dark
+  .interactive[data-interactive-variant="action"][data-interactive-prominence="primary"][data-interaction="hover"]:not(
+    [data-disabled]
+  ) {
   background-color: #51247d;
 }
 
 .dark .button-action-primary:active,
 .dark .button-action-primary[data-state="transient"]:active,
-.dark button.group\/IconButton.active\:bg-action-link-06:active {
+.dark button.group\/IconButton.active\:bg-action-link-06:active,
+.dark
+  .interactive[data-interactive-variant="action"][data-interactive-prominence="primary"]:active:not(
+    [data-disabled]
+  ),
+.dark
+  .interactive[data-interactive-variant="action"][data-interactive-prominence="primary"][data-interaction="active"]:not(
+    [data-disabled]
+  ) {
   background-color: #24113a;
 }
