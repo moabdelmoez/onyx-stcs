@@ -44,9 +44,9 @@
   --theme-gradient-05: var(--stc-purple-05);
   --theme-gradient-00: var(--stc-rose-05);
 
-  --action-link-06: #24113a;
-  --action-link-05: #3d1768;
-  --action-link-04: #51247d;
+  --action-link-06: var(--stc-purple-06);
+  --action-link-05: var(--stc-purple-05);
+  --action-link-04: var(--stc-purple-04);
   --action-link-03: var(--stc-purple-02);
   --action-link-02: #3c1f5d;
   --action-link-01: var(--stc-purple-01);
@@ -54,4 +54,22 @@
   --action-text-link-05: var(--stc-purple-05);
 
   --highlight-accent: color-mix(in srgb, var(--stc-rose-05) 50%, transparent);
+}
+
+.dark .button-action-primary,
+.dark button.group\/IconButton.bg-action-link-05 {
+  background-color: #3d1768;
+}
+
+.dark .button-action-primary:hover,
+.dark .button-action-primary[data-state="transient"],
+.dark button.group\/IconButton.bg-action-link-04,
+.dark button.group\/IconButton.hover\:bg-action-link-04:hover {
+  background-color: #51247d;
+}
+
+.dark .button-action-primary:active,
+.dark .button-action-primary[data-state="transient"]:active,
+.dark button.group\/IconButton.active\:bg-action-link-06:active {
+  background-color: #24113a;
 }
