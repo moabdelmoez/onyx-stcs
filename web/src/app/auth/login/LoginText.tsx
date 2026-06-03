@@ -15,7 +15,7 @@ export default function LoginText() {
         Welcome to {brand.applicationName}
       </Text>
       <Text as="p" text03 mainUiMuted>
-        Your open source AI platform for work
+        Your AI platform for work
       </Text>
     </div>
   );
