@@ -23,6 +23,7 @@ import {
 } from "@/refresh-components/buttons/source-tag/sourceTagUtils";
 import { openDocument } from "@/lib/search/utils";
 import { ensureHrefProtocol } from "@/lib/utils";
+import { cn } from "@opal/utils";
 
 export const MemoizedAnchor = memo(
   ({
@@ -221,14 +222,24 @@ export const MemoizedLink = memo(
 );
 
 interface MemoizedParagraphProps {
+  as?: "p" | "div";
   className?: string;
   children?: React.ReactNode;
 }
 
 export const MemoizedParagraph = memo(function MemoizedParagraph({
+  as = "p",
   className,
   children,
 }: MemoizedParagraphProps) {
+  if (as === "div") {
+    return (
+      <div className={cn("font-main-content-body text-text-05", className)}>
+        {children}
+      </div>
+    );
+  }
+
   return (
     <Text as="p" mainContentBody className={className}>
       {children}

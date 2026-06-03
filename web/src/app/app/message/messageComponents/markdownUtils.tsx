@@ -121,6 +121,44 @@ export const processContent = (content: string): string => {
   return escapeIncompleteInlineMath(processed);
 };
 
+type MarkdownAstNode = {
+  type?: string;
+  tagName?: string;
+  properties?: Record<string, unknown>;
+  value?: unknown;
+  children?: MarkdownAstNode[];
+};
+
+function isMarkdownAstNode(node: unknown): node is MarkdownAstNode {
+  return typeof node === "object" && node !== null;
+}
+
+function getMarkdownAstText(node: MarkdownAstNode): string {
+  if (typeof node.value === "string") {
+    return node.value;
+  }
+
+  return node.children?.map(getMarkdownAstText).join("") ?? "";
+}
+
+function containsChatImageLink(node: MarkdownAstNode): boolean {
+  if (node.type === "element" && node.tagName === "a") {
+    const href = node.properties?.href;
+    if (
+      typeof href === "string" &&
+      extractChatImageFileId(href, getMarkdownAstText(node))
+    ) {
+      return true;
+    }
+  }
+
+  return node.children?.some(containsChatImageLink) ?? false;
+}
+
+export function paragraphContainsChatImageLink(node: unknown): boolean {
+  return isMarkdownAstNode(node) && containsChatImageLink(node);
+}
+
 /**
  * Hook that provides markdown component callbacks for consistent rendering
  */
@@ -131,7 +169,10 @@ export const useMarkdownComponents = (
 ) => {
   const paragraphCallback = useCallback(
     (props: any) => (
-      <MemoizedParagraph className={className}>
+      <MemoizedParagraph
+        as={paragraphContainsChatImageLink(props.node) ? "div" : "p"}
+        className={className}
+      >
         {props.children}
       </MemoizedParagraph>
     ),

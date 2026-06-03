@@ -16,7 +16,11 @@ import {
 } from "../../../services/streamingModels";
 import { MessageRenderer, FullChatState } from "../interfaces";
 import { isFinalAnswerComplete } from "../../../services/packetUtils";
-import { processContent, ScrollableTable } from "../markdownUtils";
+import {
+  paragraphContainsChatImageLink,
+  processContent,
+  ScrollableTable,
+} from "../markdownUtils";
 import { BlinkingBar } from "../../BlinkingBar";
 import { useVoiceMode } from "@/providers/VoiceModeProvider";
 import {
@@ -359,8 +363,11 @@ export const MessageTextRenderer: MessageRenderer<
           </MemoizedAnchor>
         );
       },
-      p: ({ children }) => (
-        <MemoizedParagraph className="font-main-content-body">
+      p: ({ node, children }) => (
+        <MemoizedParagraph
+          as={paragraphContainsChatImageLink(node) ? "div" : "p"}
+          className="font-main-content-body"
+        >
           {children}
         </MemoizedParagraph>
       ),

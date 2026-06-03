@@ -4,15 +4,18 @@ import { useEffect } from "react";
 import { buildImgUrl } from "@/app/app/components/files/images/utils";
 import { cn } from "@opal/utils";
 import * as Dialog from "@radix-ui/react-dialog";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 interface FullImageModalProps {
   fileId: string;
+  fileName?: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
 export function FullImageModal({
   fileId,
+  fileName,
   open,
   onOpenChange,
 }: FullImageModalProps) {
@@ -33,6 +36,14 @@ export function FullImageModal({
             "focus:outline-hidden"
           )}
         >
+          <VisuallyHidden.Root>
+            <Dialog.Title>
+              {fileName ? `Image preview: ${fileName}` : "Image preview"}
+            </Dialog.Title>
+            <Dialog.Description>
+              Full-size preview of the selected image.
+            </Dialog.Description>
+          </VisuallyHidden.Root>
           <img
             src={buildImgUrl(fileId)}
             alt="Uploaded image"
