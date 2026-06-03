@@ -127,21 +127,44 @@ This work will not:
 
 ## Validation Plan
 
-Run focused web checks from `web/`:
+Run focused web checks from `web/` and treat both commands as required:
 
 ```bash
 bun run types:check
 bun run lint
 ```
 
-Then run or reuse the local web app at `http://localhost:3000` and verify in browser:
+Both commands should exit with code `0`. Any TypeScript or lint failure caused by the branding changes must be fixed before the work is considered complete.
 
-- `/app` welcome shows the STC logo and expected default brand behavior
-- sidebar shows `STC Presales Sandbox` and does not show `Powered by Onyx`
-- browser title is `STC Presales Sandbox`
-- favicon uses the STC logo asset
-- auth/login screen uses STC visible branding
-- light and dark modes both preserve readable STC accent colors
-- admin-configured enterprise branding still overrides the STC default if present
+Then run or reuse the local web app at `http://localhost:3000` and verify the UI in a browser.
+
+Successful validation means all of the following are true:
+
+- `/app` welcome shows the STC logo as an uncropped diamond mark.
+- `/app` welcome and sidebar use `STC Presales Sandbox` when no custom enterprise branding is configured.
+- The sidebar does not show `Powered by Onyx` for the STC default shell.
+- Browser title is `STC Presales Sandbox` when no custom enterprise application name is configured.
+- Browser favicon uses the STC logo asset when no custom enterprise logo is configured.
+- Auth login screen shows STC visible branding and no hardcoded Onyx logo in the primary auth card.
+- Visible error/loading screens that use shared branding show the STC default logo/name.
+- Light mode uses STC purple for primary actions, selected states, and active brand marks while keeping neutral backgrounds readable.
+- Dark mode keeps readable contrast and does not turn the whole app into a purple theme.
+- Semantic status colors still read as success, warning, error, and info.
+- Admin-configured enterprise branding still overrides the STC repo default for application name, logo, and favicon.
+- Existing backend/API/docs/internal Onyx names are not renamed as part of this UI-only change.
+
+Recommended browser paths to check:
+
+- `/app`
+- `/auth/login`
+- one admin route with the sidebar, such as `/admin/users` or `/admin/configuration/language-models`
+- one Craft route if Craft is enabled, such as `/craft`
+
+Recommended browser actions:
+
+- Toggle light and dark mode from the existing user settings/theme control.
+- Fold and unfold the sidebar to confirm the STC logo remains visible and correctly sized.
+- Inspect the document title and favicon after loading `/app`.
+- If enterprise Appearance settings are available, temporarily set a custom application name and logo, confirm they override STC defaults, then restore the settings.
 
 Playwright welcome visual specs are not required for the initial validation unless implementation risk grows.
