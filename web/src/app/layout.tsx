@@ -20,6 +20,7 @@ import LicenseExpiryBanner from "@/sections/LicenseExpiryBanner";
 import CustomAnalyticsScript from "@/providers/CustomAnalyticsScript";
 import ProductGatingWrapper from "@/providers/ProductGatingWrapper";
 import SWRConfigProvider from "@/providers/SWRConfigProvider";
+import { DEFAULT_BRAND } from "@/lib/branding/defaultBrand";
 
 const hankenGrotesk = Hanken_Grotesk({
   subsets: ["latin"],
@@ -51,8 +52,11 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Onyx",
+  title: DEFAULT_BRAND.applicationName,
   description: "Question answering for your documents",
+  icons: {
+    icon: DEFAULT_BRAND.faviconPath,
+  },
 };
 
 // force-dynamic prevents Next.js from statically prerendering pages at build
