@@ -80,6 +80,20 @@ describe("AppHealthBanner logout handling", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("uses neutral deployment copy for backend availability errors", () => {
+    mockUseSWR.mockReturnValue({
+      error: new Error("backend unavailable"),
+    });
+
+    render(<AppHealthBanner />);
+
+    expect(
+      screen.getByText(/the backend is currently unavailable/i)
+    ).toBeInTheDocument();
+    expect(screen.getByText(/updated your deployment/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Onyx deployment/i)).not.toBeInTheDocument();
+  });
+
   it("shows the logged-out modal after a 403 when a user was previously loaded", async () => {
     mockUsePathname.mockReturnValue("/chat");
     mockUseCurrentUser.mockReturnValue({
