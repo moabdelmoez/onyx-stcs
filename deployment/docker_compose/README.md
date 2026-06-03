@@ -4,6 +4,7 @@ To set up Onyx there are several options, Onyx supports the following for deploy
 1. Quick guided install via the install.sh script
 2. Pulling the repo and running `docker compose up -d` from the deployment/docker_compose directory
   - Note, it is recommended to copy over the env.template file to .env and edit the necessary values
+  - For the STC-branded deployment, follow [STC_PRESALES_SANDBOX.md](./STC_PRESALES_SANDBOX.md)
 3. For large scale deployments leveraging Kubernetes, there are two options, Helm or Terraform.
 
 This README focuses on the easiest guided deployment which is via install.sh.
