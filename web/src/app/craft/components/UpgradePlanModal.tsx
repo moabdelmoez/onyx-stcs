@@ -3,6 +3,7 @@
 import Text from "@/refresh-components/texts/Text";
 import { SvgAlertTriangle } from "@opal/icons";
 import { UsageLimits } from "@/app/craft/types/streamingTypes";
+import { useResolvedBrand } from "@/lib/branding/useResolvedBrand";
 
 interface UpgradePlanModalProps {
   open: boolean;
@@ -19,6 +20,8 @@ export default function UpgradePlanModal({
   onClose,
   limits,
 }: UpgradePlanModalProps) {
+  const brand = useResolvedBrand();
+
   if (!open) return null;
 
   const isPaidUser = limits?.limitType === "weekly";
@@ -45,7 +48,7 @@ export default function UpgradePlanModal({
                     You've used all {limits?.limit ?? 25} messages for this
                     week. Your message limit will automatically reset at the
                     start of each week, allowing you to continue crafting with
-                    Onyx.
+                    {brand.applicationName}.
                   </>
                 ) : (
                   <>

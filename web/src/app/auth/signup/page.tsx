@@ -14,6 +14,7 @@ import AuthErrorDisplay from "@/components/auth/AuthErrorDisplay";
 import Text from "@/refresh-components/texts/Text";
 import { cn } from "@opal/utils";
 import { AuthType } from "@/lib/constants";
+import SignupSubtitle from "./SignupSubtitle";
 
 const Page = async (props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -76,9 +77,7 @@ const Page = async (props: {
             <Text as="p" headingH2 text05>
               {cloud ? "Complete your sign up" : "Create account"}
             </Text>
-            <Text as="p" text03>
-              Get started with Onyx
-            </Text>
+            <SignupSubtitle />
           </div>
           {cloud && authUrl && (
             <div className="w-full justify-center mt-6">

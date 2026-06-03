@@ -6,6 +6,7 @@ import Text from "@/refresh-components/texts/Text";
 import { SvgLock, SvgArrowRight } from "@opal/icons";
 import { logout } from "@/lib/user";
 import { cn } from "@opal/utils";
+import { useResolvedBrand } from "@/lib/branding/useResolvedBrand";
 
 interface NoLlmProvidersModalProps {
   open: boolean;
@@ -22,6 +23,7 @@ export default function NoLlmProvidersModal({
 }: NoLlmProvidersModalProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const brand = useResolvedBrand();
 
   const handleCreateNewAccount = async () => {
     setIsLoading(true);
@@ -61,7 +63,7 @@ export default function NoLlmProvidersModal({
                 <br />
                 <br />
                 Please ask your admin to configure an LLM provider, or create a
-                new Onyx account to become an admin yourself!
+                new {brand.applicationName} account to become an admin yourself!
               </Text>
             </div>
           </div>

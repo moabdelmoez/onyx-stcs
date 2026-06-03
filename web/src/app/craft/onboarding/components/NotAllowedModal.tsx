@@ -6,6 +6,7 @@ import Text from "@/refresh-components/texts/Text";
 import { SvgLock, SvgArrowRight } from "@opal/icons";
 import { logout } from "@/lib/user";
 import { cn } from "@opal/utils";
+import { useResolvedBrand } from "@/lib/branding/useResolvedBrand";
 
 interface NotAllowedModalProps {
   open: boolean;
@@ -18,6 +19,7 @@ export default function NotAllowedModal({
 }: NotAllowedModalProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const brand = useResolvedBrand();
 
   const handleCreateNewAccount = async () => {
     setIsLoading(true);
@@ -56,8 +58,8 @@ export default function NotAllowedModal({
                 permissions.
                 <br />
                 <br />
-                Luckily, you can create a new Onyx account to become an admin
-                and craft with your own data!
+                Luckily, you can create a new {brand.applicationName} account to
+                become an admin and craft with your own data!
               </Text>
             </div>
           </div>

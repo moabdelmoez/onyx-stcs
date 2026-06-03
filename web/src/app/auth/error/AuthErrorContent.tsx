@@ -5,6 +5,7 @@ import Text from "@/refresh-components/texts/Text";
 import { Button } from "@opal/components";
 
 import { NEXT_PUBLIC_CLOUD_ENABLED } from "@/lib/constants";
+import { useResolvedBrand } from "@/lib/branding/useResolvedBrand";
 
 // Maps raw IdP/OAuth error codes to user-friendly messages.
 // If the message is a known code, we replace it; otherwise show it as-is.
@@ -33,6 +34,8 @@ interface AuthErrorContentProps {
 
 function AuthErrorContent({ message: rawMessage }: AuthErrorContentProps) {
   const message = resolveMessage(rawMessage);
+  const brand = useResolvedBrand();
+
   return (
     <AuthFlowContainer>
       <div className="flex flex-col items-center gap-4">
@@ -74,7 +77,7 @@ function AuthErrorContent({ message: rawMessage }: AuthErrorContentProps) {
           {NEXT_PUBLIC_CLOUD_ENABLED ? (
             <>
               If you continue to experience problems, please reach out to the
-              Onyx team at{" "}
+              {` ${brand.applicationName} team at `}
               <a href="mailto:support@onyx.app" className="text-action-link-05">
                 support@onyx.app
               </a>
