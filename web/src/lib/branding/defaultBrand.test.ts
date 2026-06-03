@@ -51,6 +51,7 @@ describe("resolveBrand", () => {
 
     expect(brand.applicationName).toBe("Customer Portal");
     expect(brand.logoSrc).toBe(DEFAULT_BRAND.logoPath);
+    expect(brand.logoAlt).toBe(DEFAULT_BRAND.logoAlt);
     expect(brand.isDefaultBrand).toBe(false);
     expect(brand.shouldHidePoweredBy).toBe(false);
   });
@@ -74,6 +75,25 @@ describe("resolveBrand", () => {
 
     expect(brand.logoSrc).toBe(ENTERPRISE_LOGO_PATH);
     expect(brand.faviconSrc).toBe(ENTERPRISE_LOGO_PATH);
+  });
+
+  test("uses generic alt text for custom logo without application name", () => {
+    const brand = resolveBrand(
+      makeEnterpriseSettings({ use_custom_logo: true })
+    );
+
+    expect(brand.logoAlt).toBe("Application logo");
+  });
+
+  test("uses custom application name in custom logo alt text", () => {
+    const brand = resolveBrand(
+      makeEnterpriseSettings({
+        application_name: "Customer Portal",
+        use_custom_logo: true,
+      })
+    );
+
+    expect(brand.logoAlt).toBe("Customer Portal logo");
   });
 
   test("preserves configured display style", () => {

@@ -32,6 +32,19 @@ function getCustomApplicationName(
   return value ? value : null;
 }
 
+function getLogoAlt(
+  customApplicationName: string | null,
+  isCustomLogo: boolean
+): string {
+  if (!isCustomLogo) {
+    return DEFAULT_BRAND.logoAlt;
+  }
+
+  return customApplicationName
+    ? `${customApplicationName} logo`
+    : "Application logo";
+}
+
 export function resolveBrand(
   enterpriseSettings: EnterpriseSettings | null | undefined,
   cacheBuster?: number
@@ -47,7 +60,7 @@ export function resolveBrand(
     applicationName: customApplicationName ?? DEFAULT_BRAND.applicationName,
     logoSrc,
     faviconSrc: isCustomLogo ? logoSrc : DEFAULT_BRAND.faviconPath,
-    logoAlt: DEFAULT_BRAND.logoAlt,
+    logoAlt: getLogoAlt(customApplicationName, isCustomLogo),
     logoDisplayStyle: enterpriseSettings?.logo_display_style ?? "logo_and_name",
     isCustomLogo,
     isDefaultBrand,
