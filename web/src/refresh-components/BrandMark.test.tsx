@@ -34,22 +34,21 @@ describe("BrandMark", () => {
   });
 
   test("renders enterprise custom logo with circular crop when requested", () => {
-    renderWithSettings(
-      <BrandMark size={32} cropToCircle />,
-      {
-        application_name: "Customer Portal",
-        use_custom_logo: true,
-        logo_display_style: null,
-        hide_onyx_branding: null,
-      }
-    );
+    renderWithSettings(<BrandMark size={32} cropToCircle />, {
+      application_name: "Customer Portal",
+      use_custom_logo: true,
+      logo_display_style: null,
+      hide_onyx_branding: null,
+    });
 
     const wrapper = screen.getByTestId("brand-mark");
     const image = screen.getByAltText("Customer Portal logo");
 
     expect(wrapper).toHaveClass("rounded-full");
     expect(image).toHaveAttribute("alt", "Customer Portal logo");
-    expect(image.getAttribute("src")).toContain("/api/enterprise-settings/logo");
+    expect(image.getAttribute("src")).toContain(
+      "/api/enterprise-settings/logo"
+    );
     expect(image).toHaveClass("object-cover");
   });
 });

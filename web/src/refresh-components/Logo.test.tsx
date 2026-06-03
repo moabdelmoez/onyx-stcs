@@ -43,60 +43,52 @@ describe("Logo", () => {
   });
 
   test("renders custom enterprise application name", () => {
-    renderWithSettings(
-      <Logo size={28} />,
-      {
-        application_name: "Customer Portal",
-        use_custom_logo: false,
-        logo_display_style: "logo_and_name",
-        hide_onyx_branding: null,
-      }
-    );
+    renderWithSettings(<Logo size={28} />, {
+      application_name: "Customer Portal",
+      use_custom_logo: false,
+      logo_display_style: "logo_and_name",
+      hide_onyx_branding: null,
+    });
 
     expect(screen.getAllByText("Customer Portal")).not.toHaveLength(0);
   });
 
   test("renders custom enterprise logo with circular crop", () => {
-    renderWithSettings(
-      <Logo size={28} />,
-      {
-        application_name: "Customer Portal",
-        use_custom_logo: true,
-        logo_display_style: "logo_and_name",
-        hide_onyx_branding: true,
-      }
-    );
+    renderWithSettings(<Logo size={28} />, {
+      application_name: "Customer Portal",
+      use_custom_logo: true,
+      logo_display_style: "logo_and_name",
+      hide_onyx_branding: true,
+    });
 
     const image = screen.getByAltText("Customer Portal logo");
-    expect(image.getAttribute("src")).toContain("/api/enterprise-settings/logo");
+    expect(image.getAttribute("src")).toContain(
+      "/api/enterprise-settings/logo"
+    );
     expect(screen.getByTestId("brand-mark")).toHaveClass("rounded-full");
   });
 
   test("honors logo_only display style", () => {
-    renderWithSettings(
-      <Logo size={28} />,
-      {
-        application_name: "Customer Portal",
-        use_custom_logo: false,
-        logo_display_style: "logo_only",
-        hide_onyx_branding: null,
-      }
-    );
+    renderWithSettings(<Logo size={28} />, {
+      application_name: "Customer Portal",
+      use_custom_logo: false,
+      logo_display_style: "logo_only",
+      hide_onyx_branding: null,
+    });
 
-    expect(screen.getByAltText("STC Presales Sandbox logo")).toBeInTheDocument();
+    expect(
+      screen.getByAltText("STC Presales Sandbox logo")
+    ).toBeInTheDocument();
     expect(screen.queryByText("Customer Portal")).not.toBeInTheDocument();
   });
 
   test("honors name_only display style", () => {
-    renderWithSettings(
-      <Logo size={28} />,
-      {
-        application_name: "Customer Portal",
-        use_custom_logo: false,
-        logo_display_style: "name_only",
-        hide_onyx_branding: null,
-      }
-    );
+    renderWithSettings(<Logo size={28} />, {
+      application_name: "Customer Portal",
+      use_custom_logo: false,
+      logo_display_style: "name_only",
+      hide_onyx_branding: null,
+    });
 
     expect(
       screen.queryByAltText("STC Presales Sandbox logo")

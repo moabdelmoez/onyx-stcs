@@ -32,6 +32,8 @@ describe("SignupSubtitle", () => {
       hide_onyx_branding: null,
     });
 
-    expect(screen.getByText("Get started with Customer Portal")).toBeInTheDocument();
+    expect(
+      screen.getByText("Get started with Customer Portal")
+    ).toBeInTheDocument();
   });
 });

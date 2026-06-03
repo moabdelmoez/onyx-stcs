@@ -127,8 +127,8 @@ export default function AccessRestricted() {
       ) : NEXT_PUBLIC_CLOUD_ENABLED ? (
         <>
           <Text text03>
-            To reinstate your access and continue using{" "}
-            {brand.applicationName}, please update your payment information.
+            To reinstate your access and continue using {brand.applicationName},
+            please update your payment information.
           </Text>
 
           <Text text03>
