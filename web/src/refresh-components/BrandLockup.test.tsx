@@ -40,4 +40,36 @@ describe("BrandLockup", () => {
 
     expect(screen.getByText("Customer Portal")).toBeInTheDocument();
   });
+
+  test("honors logo_only display style", () => {
+    mockUseSettingsContext.mockReturnValue({
+      enterpriseSettings: {
+        application_name: "Customer Portal",
+        use_custom_logo: false,
+        logo_display_style: "logo_only",
+        hide_onyx_branding: null,
+      },
+    });
+
+    render(<BrandLockup size={36} />);
+
+    expect(screen.getByAltText("STC Presales Sandbox logo")).toBeInTheDocument();
+    expect(screen.queryByText("Customer Portal")).not.toBeInTheDocument();
+  });
+
+  test("honors name_only display style", () => {
+    mockUseSettingsContext.mockReturnValue({
+      enterpriseSettings: {
+        application_name: "Customer Portal",
+        use_custom_logo: false,
+        logo_display_style: "name_only",
+        hide_onyx_branding: null,
+      },
+    });
+
+    render(<BrandLockup size={36} />);
+
+    expect(screen.queryByAltText("STC Presales Sandbox logo")).not.toBeInTheDocument();
+    expect(screen.getByText("Customer Portal")).toBeInTheDocument();
+  });
 });

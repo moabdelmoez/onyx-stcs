@@ -16,13 +16,17 @@ export default function BrandLockup({
   nameClassName,
 }: BrandLockupProps) {
   const brand = useResolvedBrand();
+  const showMark = brand.logoDisplayStyle !== "name_only";
+  const showName = brand.logoDisplayStyle !== "logo_only";
 
   return (
     <div className={cn("flex items-center gap-3", className)}>
-      <BrandMark size={size} />
-      <span className={cn("font-semibold text-text-05", nameClassName)}>
-        {brand.applicationName}
-      </span>
+      {showMark && <BrandMark size={size} />}
+      {showName && (
+        <span className={cn("font-semibold text-text-05", nameClassName)}>
+          {brand.applicationName}
+        </span>
+      )}
     </div>
   );
 }
