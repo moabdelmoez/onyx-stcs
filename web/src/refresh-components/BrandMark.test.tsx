@@ -44,6 +44,7 @@ describe("BrandMark", () => {
     const image = screen.getByAltText("Customer Portal logo");
 
     expect(wrapper).toHaveClass("rounded-full");
+    expect(image).toHaveAttribute("alt", "Customer Portal logo");
     expect(image.getAttribute("src")).toContain("/api/enterprise-settings/logo");
     expect(image).toHaveClass("object-cover");
   });
