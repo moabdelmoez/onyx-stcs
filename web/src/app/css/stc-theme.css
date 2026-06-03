@@ -56,10 +56,12 @@
   --highlight-accent: color-mix(in srgb, var(--stc-rose-05) 50%, transparent);
 }
 
-.dark .button-action-primary,
-.dark button.group\/IconButton.bg-action-link-05,
+.dark .button-action-primary:not(:disabled),
+.dark button.group\/IconButton.bg-action-link-05:not(:disabled),
 .dark
-  .interactive[data-interactive-variant="action"][data-interactive-prominence="primary"] {
+  .interactive[data-interactive-variant="action"][data-interactive-prominence="primary"]:not(
+    [data-disabled]
+  ) {
   background-color: #3d1768;
 }
 
@@ -90,4 +92,11 @@
     [data-disabled]
   ) {
   background-color: #24113a;
+}
+
+.dark .button-action-primary:disabled,
+.dark button.group\/IconButton.bg-action-link-05:disabled,
+.dark
+  .interactive[data-interactive-variant="action"][data-interactive-prominence="primary"][data-disabled] {
+  background-color: var(--action-link-02);
 }
