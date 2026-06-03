@@ -2,16 +2,10 @@
 
 import { useEffect, useMemo } from "react";
 import { useSettingsContext } from "@/providers/SettingsProvider";
+import { resolveBrand } from "@/lib/branding/defaultBrand";
 
 export default function DynamicMetadata() {
   const { enterpriseSettings } = useSettingsContext();
-
-  useEffect(() => {
-    const title = enterpriseSettings?.application_name || "Onyx";
-    if (document.title !== title) {
-      document.title = title;
-    }
-  }, [enterpriseSettings]);
 
   // Cache-buster so the favicon re-fetches after an admin uploads a new logo.
   const cacheBuster = useMemo(
@@ -20,9 +14,16 @@ export default function DynamicMetadata() {
     [enterpriseSettings]
   );
 
-  const favicon = enterpriseSettings?.use_custom_logo
-    ? `/api/enterprise-settings/logo?v=${cacheBuster}`
-    : "/onyx.ico";
+  const brand = useMemo(
+    () => resolveBrand(enterpriseSettings, cacheBuster),
+    [enterpriseSettings, cacheBuster]
+  );
 
-  return <link rel="icon" href={favicon} />;
+  useEffect(() => {
+    if (document.title !== brand.applicationName) {
+      document.title = brand.applicationName;
+    }
+  }, [brand.applicationName]);
+
+  return <link rel="icon" href={brand.faviconSrc} />;
 }

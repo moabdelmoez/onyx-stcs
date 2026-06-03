@@ -1,23 +1,28 @@
 import { render, screen } from "@tests/setup/test-utils";
+import { SettingsContext } from "@/providers/SettingsProvider";
+import { CombinedSettings, EnterpriseSettings } from "@/interfaces/settings";
 import BrandMark from "./BrandMark";
 
-const mockUseSettingsContext = jest.fn();
-
-jest.mock("@/providers/SettingsProvider", () => ({
-  useSettingsContext: () => mockUseSettingsContext(),
-}));
+function renderWithSettings(
+  ui: React.ReactElement,
+  enterpriseSettings: Partial<EnterpriseSettings> | null = null
+) {
+  return render(
+    <SettingsContext.Provider
+      value={{ enterpriseSettings } as CombinedSettings}
+    >
+      {ui}
+    </SettingsContext.Provider>
+  );
+}
 
 describe("BrandMark", () => {
-  beforeEach(() => {
-    mockUseSettingsContext.mockReturnValue({ enterpriseSettings: null });
-  });
-
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   test("renders the default STC logo without circular crop", () => {
-    render(<BrandMark size={40} />);
+    renderWithSettings(<BrandMark size={40} />);
 
     const wrapper = screen.getByTestId("brand-mark");
     const image = screen.getByAltText("STC Presales Sandbox logo");
@@ -29,16 +34,15 @@ describe("BrandMark", () => {
   });
 
   test("renders enterprise custom logo with circular crop when requested", () => {
-    mockUseSettingsContext.mockReturnValue({
-      enterpriseSettings: {
+    renderWithSettings(
+      <BrandMark size={32} cropToCircle />,
+      {
         application_name: "Customer Portal",
         use_custom_logo: true,
         logo_display_style: null,
         hide_onyx_branding: null,
-      },
-    });
-
-    render(<BrandMark size={32} cropToCircle />);
+      }
+    );
 
     const wrapper = screen.getByTestId("brand-mark");
     const image = screen.getByAltText("Customer Portal logo");

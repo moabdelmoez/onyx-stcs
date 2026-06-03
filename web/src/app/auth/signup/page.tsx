@@ -14,6 +14,7 @@ import AuthErrorDisplay from "@/components/auth/AuthErrorDisplay";
 import Text from "@/refresh-components/texts/Text";
 import { cn } from "@opal/utils";
 import { AuthType } from "@/lib/constants";
+import { DEFAULT_BRAND } from "@/lib/branding/defaultBrand";
 
 const Page = async (props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -77,7 +78,7 @@ const Page = async (props: {
               {cloud ? "Complete your sign up" : "Create account"}
             </Text>
             <Text as="p" text03>
-              Get started with Onyx
+              Get started with {DEFAULT_BRAND.applicationName}
             </Text>
           </div>
           {cloud && authUrl && (

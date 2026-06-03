@@ -1,15 +1,16 @@
 "use client";
 
-import { useMemo } from "react";
-import { useSettingsContext } from "@/providers/SettingsProvider";
+import { useContext, useMemo } from "react";
+import { SettingsContext } from "@/providers/SettingsProvider";
 import { resolveBrand, type ResolvedBrand } from "./defaultBrand";
 
 export function useResolvedBrand(): ResolvedBrand {
-  const settings = useSettingsContext();
-  const cacheBuster = useMemo(() => Date.now(), [settings.enterpriseSettings]);
+  const settings = useContext(SettingsContext);
+  const enterpriseSettings = settings?.enterpriseSettings;
+  const cacheBuster = useMemo(() => Date.now(), [enterpriseSettings]);
 
   return useMemo(
-    () => resolveBrand(settings.enterpriseSettings, cacheBuster),
-    [settings.enterpriseSettings, cacheBuster]
+    () => resolveBrand(enterpriseSettings, cacheBuster),
+    [enterpriseSettings, cacheBuster]
   );
 }
