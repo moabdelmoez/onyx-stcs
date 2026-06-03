@@ -44,9 +44,9 @@
   --theme-gradient-05: var(--stc-purple-05);
   --theme-gradient-00: var(--stc-rose-05);
 
-  --action-link-06: var(--stc-purple-06);
-  --action-link-05: var(--stc-purple-05);
-  --action-link-04: var(--stc-purple-04);
+  --action-link-06: #24113a;
+  --action-link-05: #3d1768;
+  --action-link-04: #51247d;
   --action-link-03: var(--stc-purple-02);
   --action-link-02: #3c1f5d;
   --action-link-01: var(--stc-purple-01);
