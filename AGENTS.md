@@ -16,6 +16,50 @@ This file provides guidance to AI agents when working with code in this reposito
 - Put ALL db operations under the `backend/onyx/db` / `backend/ee/onyx/db` directories. Don't run queries
   outside of those directories.
 
+## Codex Harness Workflow
+
+This repository uses a lightweight Codex harness for long-running agent work. Before implementing a change:
+
+1. Confirm the repository root with `pwd`.
+2. Read `codex-progress.md` for the latest verified state, blocker, and next best action.
+3. Read `feature_list.json` and select the highest-priority unfinished feature that matches the user request.
+4. Review recent history with `git log --oneline -5`.
+5. Run the relevant setup and verification commands before stacking new work on top of the current state.
+
+Standard setup commands:
+
+```bash
+uv sync --frozen
+cd web && bun install --frozen-lockfile
+```
+
+Standard verification commands:
+
+```bash
+uv run --no-sync ty check
+cd web && bun run types:check
+```
+
+Run focused tests for the area you changed. Examples include `pytest -xv backend/tests/unit/path/to/test.py`,
+`python -m dotenv -f .vscode/.env run -- pytest backend/tests/integration/path`, `cd web && bun test -- path`,
+or `cd web && bunx playwright test <TEST_NAME>`.
+
+Harness rules:
+
+- Work on one active feature at a time.
+- Do not mark a feature `passing` unless verification ran and evidence is recorded.
+- Do not silently weaken verification requirements during implementation.
+- Keep `codex-progress.md` and `feature_list.json` aligned with the real repo state before ending a session.
+- Preserve unrelated user work, including untracked files, unless the user explicitly asks you to change it.
+
+Definition of done for a harness-tracked feature:
+
+- The target behavior is implemented.
+- Required verification actually ran.
+- Evidence is recorded in `feature_list.json` or `codex-progress.md`.
+- Known risks or blockers are documented.
+- The next session can continue from repo artifacts without relying on chat history.
+
 ## Project Overview
 
 **Onyx** (formerly Danswer) is an open-source Gen-AI and Enterprise Search platform that connects to company documents, apps, and people. It features a modular architecture with both Community Edition (MIT licensed) and Enterprise Edition offerings.

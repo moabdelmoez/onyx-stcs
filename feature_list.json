@@ -1,0 +1,87 @@
+{
+  "project": "onyx-stcs",
+  "last_updated": "2026-06-04",
+  "rules": {
+    "single_active_feature": true,
+    "passing_requires_evidence": true,
+    "do_not_skip_verification": true
+  },
+  "status_legend": {
+    "not_started": "Work has not begun.",
+    "in_progress": "The feature is the current active task.",
+    "blocked": "Work cannot continue until a documented blocker is resolved.",
+    "passing": "Required verification has passed and evidence is recorded."
+  },
+  "features": [
+    {
+      "id": "harness-core",
+      "priority": 1,
+      "area": "codex-harness",
+      "title": "Install core Codex harness artifacts",
+      "user_visible_behavior": "Agents can read repo-local progress and active work state before implementation, then record verification evidence before handing off.",
+      "status": "passing",
+      "verification": [
+        "Confirm no harness startup script was added.",
+        "Validate feature_list.json with python3 -m json.tool feature_list.json.",
+        "Check AGENTS.md references codex-progress.md and does not reference legacy progress filenames.",
+        "Run git diff --check."
+      ],
+      "evidence": [
+        "2026-06-04: python3 -m json.tool feature_list.json exited 0.",
+        "2026-06-04: rg -n \"codex-progress\" AGENTS.md codex-progress.md feature_list.json found expected references.",
+        "2026-06-04: legacy progress filename reference check exited 0 with no matches.",
+        "2026-06-04: test ! -e init.sh exited 0.",
+        "2026-06-04: skipped progress-file absence check exited 0.",
+        "2026-06-04: git diff --check exited 0.",
+        "2026-06-04: docs/architecture/solution-architecture.html remained untracked and untouched."
+      ],
+      "notes": "Adapted from the WalkingLabs core harness guide using Codex-specific naming."
+    },
+    {
+      "id": "stc-local-ui",
+      "priority": 2,
+      "area": "stc-ui",
+      "title": "Verify STC local UI workflow",
+      "user_visible_behavior": "A developer can run the STC local UI workflow and verify frontend changes through the documented local stack.",
+      "status": "not_started",
+      "verification": [
+        "Follow deployment/docker_compose/STC_LOCAL_UI_TESTING.md for the local stack.",
+        "Run cd web && bun run types:check.",
+        "Run focused lint, unit, or Playwright checks for changed frontend files.",
+        "Record the exact commands and results."
+      ],
+      "evidence": [],
+      "notes": "Use this when the active work changes STC-specific frontend behavior."
+    },
+    {
+      "id": "stc-web-image",
+      "priority": 3,
+      "area": "stc-deployment",
+      "title": "Verify STC web image build and publish path",
+      "user_visible_behavior": "Pushing web changes to the STC fork can build and publish the configured web server image.",
+      "status": "not_started",
+      "verification": [
+        "Review .github/workflows/stc-web-image.yml for trigger and image settings.",
+        "Run local frontend type checks before pushing.",
+        "After push, verify the GitHub Actions run and record the run URL or failure details."
+      ],
+      "evidence": [],
+      "notes": "Only mark passing with concrete local and remote build evidence."
+    },
+    {
+      "id": "stc-helm-sandbox",
+      "priority": 4,
+      "area": "stc-deployment",
+      "title": "Verify STC Helm sandbox deployment path",
+      "user_visible_behavior": "An operator can deploy the STC presales sandbox through the documented Helm/Kubernetes workflow.",
+      "status": "not_started",
+      "verification": [
+        "Follow deployment/helm/STC_PRESALES_SANDBOX_K8S.md for the target environment.",
+        "Verify required values and secrets are present without exposing secret values.",
+        "Run the documented Helm/Kubernetes checks and record command output summaries."
+      ],
+      "evidence": [],
+      "notes": "Keep secret handling out of tracked files and logs."
+    }
+  ]
+}
