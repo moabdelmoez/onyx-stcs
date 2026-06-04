@@ -13,8 +13,8 @@ overrides only the web UI image, matching the Docker Compose
   `https://github.com/moabdelmoez/onyx-stcs`.
 - Access to the published STC web image:
   `moabdelmoez/onyx-web-server:stc-presales-sandbox`.
-- A values file for your environment, for example `my-values.yaml`, containing
-  your domain, storage, auth, database, and secret configuration.
+- Optional: a private values file for your environment if you need custom
+  domain, storage, database, ingress, or external service configuration.
 
 ## 1. Clone the Repository
 
@@ -35,20 +35,42 @@ git pull origin main
 helm dependency update deployment/helm/charts/onyx
 ```
 
-## 3. Prepare Your Environment Values
+## 3. Prepare the OpenSearch Secret
 
-Create or update your own values file. Do not put cluster-specific values in
-the STC overlay. Keep them in your environment file, for example:
+The committed `prod-values.yaml` points the chart at a Kubernetes Secret for
+the OpenSearch admin credentials. Create that Secret before installing:
+
+```bash
+kubectl create namespace onyx --dry-run=client -o yaml | kubectl apply -f -
+
+kubectl -n onyx create secret generic onyx-opensearch \
+  --from-literal=opensearch_admin_username=admin \
+  --from-literal=opensearch_admin_password='<replace-with-a-strong-password>'
+```
+
+The password must meet OpenSearch complexity requirements: at least 8
+characters with uppercase, lowercase, digit, and special character.
+
+If the Secret already exists, update it deliberately rather than recreating it
+blindly:
+
+```bash
+kubectl -n onyx create secret generic onyx-opensearch \
+  --from-literal=opensearch_admin_username=admin \
+  --from-literal=opensearch_admin_password='<replace-with-a-strong-password>' \
+  --dry-run=client -o yaml | kubectl apply -f -
+```
+
+## 4. Prepare Optional Environment Values
+
+For a real domain or external services, create a private values file such as
+`my-values.yaml`. Do not put cluster-specific values in the STC overlay. Keep
+them in your environment file, for example:
 
 ```yaml
 configMap:
   DOMAIN: "onyx.example.com"
   WEB_DOMAIN: "https://onyx.example.com"
-
-auth:
-  opensearch:
-    values:
-      opensearch_admin_password: "replace-with-a-strong-password"
 ```
 
 If you are adapting a Docker Compose `.env`, do not copy Compose service
@@ -58,17 +80,26 @@ chart computes Kubernetes service names for those.
 If your STC web image is private, configure `imagePullSecrets` in the same
 environment values file.
 
-## 4. Install or Upgrade Onyx with the STC UI
+## 5. Install or Upgrade Onyx with the STC UI
 
-Apply your environment values first, then the STC overlay last so it wins for
-the web image:
+Apply the minimal production values first, then your optional environment values
+if you have one, and keep the STC overlay last so it wins for the web image:
 
 ```bash
-kubectl create namespace onyx --dry-run=client -o yaml | kubectl apply -f -
-
 helm upgrade --install onyx deployment/helm/charts/onyx \
   -n onyx \
+  -f deployment/helm/charts/onyx/prod-values.yaml \
   -f my-values.yaml \
+  -f deployment/helm/charts/onyx/values-stc-presales.yaml
+```
+
+If you do not have a private environment values file yet, omit `-f
+my-values.yaml`:
+
+```bash
+helm upgrade --install onyx deployment/helm/charts/onyx \
+  -n onyx \
+  -f deployment/helm/charts/onyx/prod-values.yaml \
   -f deployment/helm/charts/onyx/values-stc-presales.yaml
 ```
 
@@ -77,7 +108,7 @@ For a quick render-only check before installing:
 ```bash
 helm template onyx deployment/helm/charts/onyx \
   -n onyx \
-  -f my-values.yaml \
+  -f deployment/helm/charts/onyx/prod-values.yaml \
   -f deployment/helm/charts/onyx/values-stc-presales.yaml \
   --show-only templates/webserver-deployment.yaml
 ```
@@ -88,7 +119,7 @@ The rendered `web-server` container should use:
 moabdelmoez/onyx-web-server:stc-presales-sandbox
 ```
 
-## 5. Validate the Deployment
+## 6. Validate the Deployment
 
 Check pod rollout:
 
@@ -138,10 +169,13 @@ For immutable production rollouts, deploy a commit-specific image tag:
 ```bash
 helm upgrade --install onyx deployment/helm/charts/onyx \
   -n onyx \
-  -f my-values.yaml \
+  -f deployment/helm/charts/onyx/prod-values.yaml \
   -f deployment/helm/charts/onyx/values-stc-presales.yaml \
   --set webserver.image.full=moabdelmoez/onyx-web-server:stc-presales-sandbox-<commit-sha>
 ```
+
+Add `-f my-values.yaml` before the STC overlay if you use a private
+environment values file.
 
 Restart only the web deployment after changing the image:
 

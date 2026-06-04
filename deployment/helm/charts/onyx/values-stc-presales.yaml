@@ -3,9 +3,10 @@
 # This mirrors the Docker Compose setting:
 #   ONYX_WEB_SERVER_IMAGE=moabdelmoez/onyx-web-server:stc-presales-sandbox
 #
-# Apply it after your environment-specific values file:
+# Apply it after prod-values.yaml and any environment-specific values file:
 #   helm upgrade --install onyx ./deployment/helm/charts/onyx \
 #     -n onyx \
+#     -f ./deployment/helm/charts/onyx/prod-values.yaml \
 #     -f ./deployment/helm/charts/onyx/values-stc-presales.yaml
 
 webserver:

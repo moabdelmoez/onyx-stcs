@@ -1,0 +1,15 @@
+# Minimal production values for STC Kubernetes deployments.
+#
+# This file intentionally does not commit real passwords. Create the
+# `onyx-opensearch` Secret before installing the chart:
+#
+#   kubectl -n onyx create secret generic onyx-opensearch \
+#     --from-literal=opensearch_admin_username=admin \
+#     --from-literal=opensearch_admin_password='<replace-with-a-strong-password>'
+#
+# Keep environment-specific domain, ingress, storage, and external service
+# overrides in a separate private values file when needed.
+
+auth:
+  opensearch:
+    existingSecret: "onyx-opensearch"

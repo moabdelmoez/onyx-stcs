@@ -188,6 +188,7 @@ For the STC-branded deployment, use the companion values overlay:
 ```bash
 helm upgrade --install onyx ./deployment/helm/charts/onyx \
   -n onyx \
+  -f ./deployment/helm/charts/onyx/prod-values.yaml \
   -f ./deployment/helm/charts/onyx/values-stc-presales.yaml
 ```
 
@@ -197,6 +198,7 @@ STC overlay last so it wins for the web image:
 ```bash
 helm upgrade --install onyx ./deployment/helm/charts/onyx \
   -n onyx \
+  -f ./deployment/helm/charts/onyx/prod-values.yaml \
   -f ./my-values.yaml \
   -f ./deployment/helm/charts/onyx/values-stc-presales.yaml
 ```
