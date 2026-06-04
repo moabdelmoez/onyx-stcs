@@ -1,0 +1,55 @@
+name: Build STC Web Image
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/stc-web-image.yml"
+      - "web/**"
+
+permissions:
+  contents: read
+
+env:
+  REGISTRY_IMAGE: moabdelmoez/onyx-web-server
+  IMAGE_TAG: stc-presales-sandbox
+
+jobs:
+  build-and-push:
+    name: Build and push STC web image
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # ratchet:actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # ratchet:docker/setup-buildx-action@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build and push web image
+        uses: docker/build-push-action@bcafcacb16a39f128d818304e6c9c0c18556b85f # ratchet:docker/build-push-action@v7
+        with:
+          context: ./web
+          file: ./web/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ env.REGISTRY_IMAGE }}:${{ env.IMAGE_TAG }}
+            ${{ env.REGISTRY_IMAGE }}:${{ env.IMAGE_TAG }}-${{ github.sha }}
+          build-args: |
+            ONYX_VERSION=${{ github.sha }}
+            NODE_OPTIONS=--max-old-space-size=8192
+          cache-from: |
+            type=registry,ref=${{ env.REGISTRY_IMAGE }}:${{ env.IMAGE_TAG }}
+          cache-to: type=inline
