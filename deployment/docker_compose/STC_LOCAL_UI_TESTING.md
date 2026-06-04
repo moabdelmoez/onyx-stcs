@@ -286,6 +286,144 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml pull web_server
 docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --force-recreate web_server
 ```
 
+On an Apple Silicon Mac, the published STC image may be `linux/amd64` only.
+If Docker reports:
+
+```text
+no matching manifest for linux/arm64/v8
+```
+
+then either keep using the local `bun run dev` workflow, or force Docker to pull
+and run the `amd64` image through emulation:
+
+```bash
+DOCKER_DEFAULT_PLATFORM=linux/amd64 \
+docker compose -f docker-compose.yml -f docker-compose.dev.yml pull web_server
+
+DOCKER_DEFAULT_PLATFORM=linux/amd64 \
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --force-recreate web_server
+```
+
+## Publishing the STC Web Image
+
+Frontend changes are visible immediately when using `bun run dev`, but Docker
+deployments use the published image:
+
+```env
+ONYX_WEB_SERVER_IMAGE=moabdelmoez/onyx-web-server:stc-presales-sandbox
+```
+
+After changing frontend code under `web/`, rebuild and push that image before
+expecting Docker deployments to include the change.
+
+Do not build the production `linux/amd64` image on an Apple Silicon Mac unless
+you are intentionally waiting for slow CPU emulation. Use GitHub Actions instead.
+
+### One-Time GitHub Setup
+
+The workflow lives at:
+
+```text
+.github/workflows/stc-web-image.yml
+```
+
+In GitHub, open:
+
+```text
+https://github.com/moabdelmoez/onyx-stcs/settings/secrets/actions
+```
+
+Add these repository secrets:
+
+```text
+DOCKER_USERNAME
+DOCKER_TOKEN
+```
+
+`DOCKER_TOKEN` must be a Docker Hub access token with permission to push:
+
+```text
+moabdelmoez/onyx-web-server
+```
+
+### Before Pushing to `main`
+
+From the repo root, verify the frontend change locally:
+
+```bash
+cd "/Users/mostafa/Downloads/Coding_Projects/onyx - stcs/onyx/web"
+bun run types:check
+```
+
+Run any focused lint/test command that matches the change. For example, for
+targeted frontend file changes:
+
+```bash
+cd "/Users/mostafa/Downloads/Coding_Projects/onyx - stcs/onyx"
+bunx oxlint path/to/changed-file.tsx
+```
+
+Commit and push to the STC fork:
+
+```bash
+git status --short --branch
+git add <changed-files>
+git commit -m "your commit message"
+git push stcs main
+```
+
+### Run the GitHub Actions Build
+
+The workflow runs automatically on pushes to `main` that change:
+
+```text
+web/**
+.github/workflows/stc-web-image.yml
+```
+
+To run it manually:
+
+1. Open `https://github.com/moabdelmoez/onyx-stcs/actions`.
+2. Select `Build STC Web Image`.
+3. Click `Run workflow`.
+4. Select branch `main`.
+5. Click `Run workflow`.
+
+Success means the latest run has a green check and the job
+`Build and push STC web image` completed.
+
+The workflow pushes:
+
+```text
+moabdelmoez/onyx-web-server:stc-presales-sandbox
+moabdelmoez/onyx-web-server:stc-presales-sandbox-<commit-sha>
+```
+
+Verify the published image:
+
+```bash
+docker buildx imagetools inspect moabdelmoez/onyx-web-server:stc-presales-sandbox
+```
+
+For an `amd64` server deployment, expect:
+
+```text
+Platform: linux/amd64
+```
+
+### Update a Docker Deployment After the Build
+
+On the deployment machine:
+
+```bash
+cd deployment/docker_compose
+docker compose -f docker-compose.yml -f docker-compose.dev.yml pull web_server
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --force-recreate web_server
+```
+
+For production-style server deployments without the dev overlay, run the same
+commands without `-f docker-compose.dev.yml`.
+
 ## Shutdown
 
 Stop the stack without deleting volumes:

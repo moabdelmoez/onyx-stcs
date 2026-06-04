@@ -181,8 +181,69 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --force-rec
 
 ## Updating the STC UI Image
 
-When a new STC UI image is pushed to Docker Hub with the same tag, pull and
-recreate the web service:
+The Compose deployment reads the STC frontend from:
+
+```env
+ONYX_WEB_SERVER_IMAGE=moabdelmoez/onyx-web-server:stc-presales-sandbox
+```
+
+After changing frontend code under `web/`, publish a new Docker image before
+expecting Docker deployments to include the change.
+
+The preferred build path is GitHub Actions, not a local Apple Silicon Mac build.
+The workflow is:
+
+```text
+.github/workflows/stc-web-image.yml
+```
+
+Before pushing frontend changes to `main`, run the relevant local checks, for
+example:
+
+```bash
+cd web
+bun run types:check
+```
+
+Then commit and push to the STC fork:
+
+```bash
+git status --short --branch
+git add <changed-files>
+git commit -m "your commit message"
+git push stcs main
+```
+
+The workflow runs automatically on pushes to `main` that change `web/**`. To run
+it manually:
+
+1. Open `https://github.com/moabdelmoez/onyx-stcs/actions`.
+2. Select `Build STC Web Image`.
+3. Click `Run workflow`.
+4. Select branch `main`.
+5. Click `Run workflow`.
+
+The workflow pushes:
+
+```text
+moabdelmoez/onyx-web-server:stc-presales-sandbox
+moabdelmoez/onyx-web-server:stc-presales-sandbox-<commit-sha>
+```
+
+Verify the published image:
+
+```bash
+docker buildx imagetools inspect moabdelmoez/onyx-web-server:stc-presales-sandbox
+```
+
+For an `amd64` server deployment, expect:
+
+```text
+Platform: linux/amd64
+```
+
+When the GitHub Actions build succeeds, pull and recreate the web service on the
+deployment machine:
 
 ```bash
 docker compose -f docker-compose.yml -f docker-compose.dev.yml pull web_server
@@ -191,3 +252,18 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --force-rec
 
 For production-style server deployments without the dev overlay, run the same
 commands without `-f docker-compose.dev.yml`.
+
+On an Apple Silicon Mac, pulling an `amd64`-only published image can fail with:
+
+```text
+no matching manifest for linux/arm64/v8
+```
+
+That does not mean the server image is bad. Pull the image on the `amd64`
+deployment server, or force local emulation only when testing the Docker image
+on your Mac:
+
+```bash
+DOCKER_DEFAULT_PLATFORM=linux/amd64 \
+docker compose -f docker-compose.yml -f docker-compose.dev.yml pull web_server
+```
