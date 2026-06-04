@@ -6,6 +6,8 @@
 #   - values-lite.yaml      Minimal deploy (no vector DB / Redis / model servers).
 #   - values-localdev.yaml  Laptop-sized overlay for kind/minikube; see
 #                           /docs/dev/local-kubernetes.md for the full workflow.
+#   - values-stc-presales.yaml
+#                           STC-branded web UI image overlay.
 
 global:
   # Global version for all Onyx components (overrides .Chart.AppVersion)
@@ -308,6 +310,11 @@ webserver:
   extraEnv: []
   replicaCount: 1
   image:
+    # Optional full image override. Use this when you want Docker Compose-style
+    # `repository:tag` behavior in a single value, e.g. a branded frontend image.
+    # When set, `repository`, `tag`, and `global.version` are ignored for the
+    # webserver container image.
+    full: ""
     repository: onyxdotapp/onyx-web-server
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""

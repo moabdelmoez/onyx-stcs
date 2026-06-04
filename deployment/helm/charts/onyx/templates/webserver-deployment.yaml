@@ -57,7 +57,8 @@ spec:
         - name: web-server
           securityContext:
             {{- toYaml .Values.webserver.securityContext | nindent 12 }}
-          image: "{{ .Values.webserver.image.repository }}:{{ .Values.webserver.image.tag | default .Values.global.version }}"
+          {{- $webserverImage := .Values.webserver.image.full | default (printf "%s:%s" .Values.webserver.image.repository (.Values.webserver.image.tag | default .Values.global.version)) }}
+          image: "{{ $webserverImage }}"
           imagePullPolicy: {{ .Values.global.pullPolicy }}
           ports:
             - name: http

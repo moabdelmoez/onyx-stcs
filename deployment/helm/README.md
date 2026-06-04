@@ -178,6 +178,38 @@ Other docker-compose-style values you should set deliberately:
   Watch for typos like `hhttps://...`; they silently break email links and
   OAuth redirects.
 
+## STC Presales Sandbox UI
+
+For the full manual Kubernetes install guide, see
+[STC_PRESALES_SANDBOX_K8S.md](./STC_PRESALES_SANDBOX_K8S.md).
+
+For the STC-branded deployment, use the companion values overlay:
+
+```bash
+helm upgrade --install onyx ./deployment/helm/charts/onyx \
+  -n onyx \
+  -f ./deployment/helm/charts/onyx/values-stc-presales.yaml
+```
+
+If you already have environment-specific values, apply them first and put the
+STC overlay last so it wins for the web image:
+
+```bash
+helm upgrade --install onyx ./deployment/helm/charts/onyx \
+  -n onyx \
+  -f ./my-values.yaml \
+  -f ./deployment/helm/charts/onyx/values-stc-presales.yaml
+```
+
+The overlay sets the webserver image to
+`moabdelmoez/onyx-web-server:stc-presales-sandbox`, matching the Docker Compose
+`ONYX_WEB_SERVER_IMAGE` value. For immutable production rollouts, prefer a
+commit-specific tag such as `stc-presales-sandbox-<commit-sha>` by overriding:
+
+```bash
+--set webserver.image.full=moabdelmoez/onyx-web-server:stc-presales-sandbox-<commit-sha>
+```
+
 # Local testing
 
 > This section covers chart-maintainer testing; for the Onyx Craft local-kind developer workflow, see [docs/dev/local-kubernetes.md](/docs/dev/local-kubernetes.md).
