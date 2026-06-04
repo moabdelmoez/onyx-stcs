@@ -62,6 +62,7 @@ node_modules
 plans/
 
 # Added context for LLMs
+docs/architecture/*
 .claude/CLAUDE.md
 .claude/settings.local.json
 .claude/scheduled_tasks.lock
