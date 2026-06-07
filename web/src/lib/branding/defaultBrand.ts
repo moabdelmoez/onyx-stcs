@@ -3,10 +3,10 @@ import { EnterpriseSettings } from "@/interfaces/settings";
 export const ENTERPRISE_LOGO_PATH = "/api/enterprise-settings/logo";
 
 export const DEFAULT_BRAND = {
-  applicationName: "STC Presales Sandbox",
+  applicationName: "Presales GPT",
   logoPath: "/branding/stc-logo.png",
   faviconPath: "/branding/stc-favicon.png",
-  logoAlt: "STC Presales Sandbox logo",
+  logoAlt: "Presales GPT logo",
   hidePoweredBy: true,
 } as const;
 

@@ -21,7 +21,7 @@ describe("DynamicMetadata", () => {
     render(<DynamicMetadata />);
 
     await waitFor(() => {
-      expect(document.title).toBe("STC Presales Sandbox");
+      expect(document.title).toBe("Presales GPT");
     });
     expect(document.head.querySelector('link[rel="icon"]')).toHaveAttribute(
       "href",

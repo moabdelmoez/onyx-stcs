@@ -9,11 +9,11 @@ describe("ErrorPageLayout", () => {
       </ErrorPageLayout>
     );
 
-    expect(screen.getByAltText("STC Presales Sandbox logo")).toHaveAttribute(
+    expect(screen.getByAltText("Presales GPT logo")).toHaveAttribute(
       "src",
       "/branding/stc-logo.png"
     );
-    expect(screen.getByText("STC Presales Sandbox")).toBeInTheDocument();
+    expect(screen.getByText("Presales GPT")).toBeInTheDocument();
     expect(screen.getByText("Configuration issue")).toBeInTheDocument();
   });
 });

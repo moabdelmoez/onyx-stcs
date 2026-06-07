@@ -25,7 +25,7 @@ describe("BrandMark", () => {
     renderWithSettings(<BrandMark size={40} />);
 
     const wrapper = screen.getByTestId("brand-mark");
-    const image = screen.getByAltText("STC Presales Sandbox logo");
+    const image = screen.getByAltText("Presales GPT logo");
 
     expect(wrapper).toHaveStyle({ width: "40px", height: "40px" });
     expect(wrapper).not.toHaveClass("rounded-full");

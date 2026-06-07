@@ -178,7 +178,7 @@ Other docker-compose-style values you should set deliberately:
   Watch for typos like `hhttps://...`; they silently break email links and
   OAuth redirects.
 
-## STC Presales Sandbox UI
+## Presales GPT UI
 
 For the full manual Kubernetes install guide, see
 [STC_PRESALES_SANDBOX_K8S.md](./STC_PRESALES_SANDBOX_K8S.md).

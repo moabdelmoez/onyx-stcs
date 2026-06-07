@@ -20,7 +20,7 @@ describe("LoginText", () => {
     renderWithSettings();
 
     expect(
-      screen.getByText("Welcome to STC Presales Sandbox")
+      screen.getByText("Welcome to Presales GPT")
     ).toBeInTheDocument();
     expect(screen.getByText("Your AI platform for work")).toBeInTheDocument();
   });

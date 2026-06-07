@@ -1,4 +1,4 @@
-# STC Presales Sandbox Docker Compose Guide
+# Presales GPT Docker Compose Guide
 
 This guide is for running the STC-branded Onyx UI with Docker Compose. It uses
 the standard Onyx backend services and overrides only the web UI image.
@@ -103,7 +103,7 @@ http://localhost:3000
 Expected UI result:
 
 - The logo is the STC purple/red diamond.
-- The product name is `STC Presales Sandbox`.
+- The product name is `Presales GPT`.
 - The sign-in or create-account screen loads without the backend-unavailable
   banner.
 

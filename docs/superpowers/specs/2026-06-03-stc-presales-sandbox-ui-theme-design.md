@@ -1,4 +1,4 @@
-# STC Presales Sandbox UI Theme Design
+# Presales GPT UI Theme Design
 
 Date: 2026-06-03
 
@@ -8,7 +8,7 @@ Customize the Onyx web UI for the STC presales sandbox without changing backend 
 
 The default visible web brand should become:
 
-- Application name: `STC Presales Sandbox`
+- Application name: `Presales GPT`
 - Main logo: the provided logo image, preserved as an uncropped transparent mark
 - Theme: restrained STC accents using the logo's purple as the primary accent and red/pink as a supporting accent
 
@@ -70,7 +70,7 @@ Expected assets:
 
 The default-brand layer should centralize:
 
-- `DEFAULT_APPLICATION_NAME = "STC Presales Sandbox"`
+- `DEFAULT_APPLICATION_NAME = "Presales GPT"`
 - default logo path
 - default favicon path
 - default decision to hide the Onyx-powered tagline
@@ -88,7 +88,7 @@ The default-brand layer should centralize:
 
 `DynamicMetadata.tsx` should set:
 
-- title to the enterprise app name when configured, otherwise `STC Presales Sandbox`
+- title to the enterprise app name when configured, otherwise `Presales GPT`
 - favicon to the enterprise custom logo when configured, otherwise the STC favicon asset
 
 Visible components that directly import Onyx logo SVGs should be routed through the shared brand layer when they are part of auth, error, or onboarding-like UI surfaces. Internal provider icons and product-specific feature names can remain unchanged.
@@ -141,9 +141,9 @@ Then run or reuse the local web app at `http://localhost:3000` and verify the UI
 Successful validation means all of the following are true:
 
 - `/app` welcome shows the STC logo as an uncropped diamond mark.
-- `/app` welcome and sidebar use `STC Presales Sandbox` when no custom enterprise branding is configured.
+- `/app` welcome and sidebar use `Presales GPT` when no custom enterprise branding is configured.
 - The sidebar does not show `Powered by Onyx` for the STC default shell.
-- Browser title is `STC Presales Sandbox` when no custom enterprise application name is configured.
+- Browser title is `Presales GPT` when no custom enterprise application name is configured.
 - Browser favicon uses the STC logo asset when no custom enterprise logo is configured.
 - Auth login screen shows STC visible branding and no hardcoded Onyx logo in the primary auth card.
 - Visible error/loading screens that use shared branding show the STC default logo/name.

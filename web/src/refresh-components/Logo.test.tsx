@@ -29,11 +29,11 @@ describe("Logo", () => {
   test("renders default STC logo and name", () => {
     renderWithSettings(<Logo size={28} />);
 
-    expect(screen.getByAltText("STC Presales Sandbox logo")).toHaveAttribute(
+    expect(screen.getByAltText("Presales GPT logo")).toHaveAttribute(
       "src",
       "/branding/stc-logo.png"
     );
-    expect(screen.getAllByText("STC Presales Sandbox")).not.toHaveLength(0);
+    expect(screen.getAllByText("Presales GPT")).not.toHaveLength(0);
   });
 
   test("does not render Powered by Onyx for default STC shell", () => {
@@ -77,7 +77,7 @@ describe("Logo", () => {
     });
 
     expect(
-      screen.getByAltText("STC Presales Sandbox logo")
+      screen.getByAltText("Presales GPT logo")
     ).toBeInTheDocument();
     expect(screen.queryByText("Customer Portal")).not.toBeInTheDocument();
   });
@@ -91,7 +91,7 @@ describe("Logo", () => {
     });
 
     expect(
-      screen.queryByAltText("STC Presales Sandbox logo")
+      screen.queryByAltText("Presales GPT logo")
     ).not.toBeInTheDocument();
     expect(screen.getAllByText("Customer Portal")).not.toHaveLength(0);
   });

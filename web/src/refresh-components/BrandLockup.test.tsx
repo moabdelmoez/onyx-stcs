@@ -24,11 +24,11 @@ describe("BrandLockup", () => {
   test("renders default STC logo and name", () => {
     renderWithSettings(<BrandLockup size={36} />);
 
-    expect(screen.getByAltText("STC Presales Sandbox logo")).toHaveAttribute(
+    expect(screen.getByAltText("Presales GPT logo")).toHaveAttribute(
       "src",
       "/branding/stc-logo.png"
     );
-    expect(screen.getByText("STC Presales Sandbox")).toBeInTheDocument();
+    expect(screen.getByText("Presales GPT")).toBeInTheDocument();
   });
 
   test("renders custom enterprise application name", () => {
@@ -51,7 +51,7 @@ describe("BrandLockup", () => {
     });
 
     expect(
-      screen.getByAltText("STC Presales Sandbox logo")
+      screen.getByAltText("Presales GPT logo")
     ).toBeInTheDocument();
     expect(screen.queryByText("Customer Portal")).not.toBeInTheDocument();
   });
@@ -65,7 +65,7 @@ describe("BrandLockup", () => {
     });
 
     expect(
-      screen.queryByAltText("STC Presales Sandbox logo")
+      screen.queryByAltText("Presales GPT logo")
     ).not.toBeInTheDocument();
     expect(screen.getByText("Customer Portal")).toBeInTheDocument();
   });

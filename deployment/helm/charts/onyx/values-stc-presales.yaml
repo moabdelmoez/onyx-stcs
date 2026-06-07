@@ -1,4 +1,4 @@
-# STC Presales Sandbox Helm overlay.
+# Presales GPT Helm overlay.
 #
 # This mirrors the Docker Compose setting:
 #   ONYX_WEB_SERVER_IMAGE=moabdelmoez/onyx-web-server:stc-presales-sandbox

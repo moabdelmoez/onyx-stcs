@@ -31,10 +31,11 @@ function makeEnterpriseSettings(
 }
 
 describe("resolveBrand", () => {
-  test("returns STC defaults without enterprise settings", () => {
+  test("returns Presales GPT defaults without enterprise settings", () => {
     const brand = resolveBrand(null, 123);
 
-    expect(brand.applicationName).toBe("STC Presales Sandbox");
+    expect(brand.applicationName).toBe("Presales GPT");
+    expect(brand.logoAlt).toBe("Presales GPT logo");
     expect(brand.logoSrc).toBe(DEFAULT_BRAND.logoPath);
     expect(brand.faviconSrc).toBe(DEFAULT_BRAND.faviconPath);
     expect(brand.logoDisplayStyle).toBe("logo_and_name");

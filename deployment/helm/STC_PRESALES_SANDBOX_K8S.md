@@ -1,4 +1,4 @@
-# STC Presales Sandbox Kubernetes Guide
+# Presales GPT Kubernetes Guide
 
 This guide is for running the STC-branded Onyx UI in a Kubernetes environment
 with the Onyx Helm chart. It uses the standard Onyx backend services and
@@ -150,7 +150,7 @@ http://localhost:8080
 Expected UI result:
 
 - The logo is the STC purple/red diamond.
-- The product name is `STC Presales Sandbox`.
+- The product name is `Presales GPT`.
 - The sign-in or create-account screen loads without the backend-unavailable
   banner.
 

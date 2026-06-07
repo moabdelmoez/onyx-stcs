@@ -20,7 +20,7 @@ describe("SignupSubtitle", () => {
     renderWithSettings();
 
     expect(
-      screen.getByText("Get started with STC Presales Sandbox")
+      screen.getByText("Get started with Presales GPT")
     ).toBeInTheDocument();
   });
 
