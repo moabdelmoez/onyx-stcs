@@ -76,9 +76,7 @@ describe("Logo", () => {
       hide_onyx_branding: null,
     });
 
-    expect(
-      screen.getByAltText("Presales GPT logo")
-    ).toBeInTheDocument();
+    expect(screen.getByAltText("Presales GPT logo")).toBeInTheDocument();
     expect(screen.queryByText("Customer Portal")).not.toBeInTheDocument();
   });
 
@@ -90,9 +88,7 @@ describe("Logo", () => {
       hide_onyx_branding: null,
     });
 
-    expect(
-      screen.queryByAltText("Presales GPT logo")
-    ).not.toBeInTheDocument();
+    expect(screen.queryByAltText("Presales GPT logo")).not.toBeInTheDocument();
     expect(screen.getAllByText("Customer Portal")).not.toHaveLength(0);
   });
 });
